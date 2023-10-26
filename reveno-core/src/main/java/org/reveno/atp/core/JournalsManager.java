@@ -25,8 +25,12 @@ public class JournalsManager implements Destroyable {
     public JournalsManager(JournalsStorage storage, RevenoJournalingConfiguration configuration) {
         this.storage = storage;
         this.configuration = configuration;
-        this.transactionsJournaler = new DefaultJournaler();
-        this.eventsJournaler = new DefaultJournaler();
+        DefaultJournaler defaultJournaler = new DefaultJournaler();
+        defaultJournaler.baseDir = storage.getBaseDir().getAbsolutePath();
+        DefaultJournaler defaultJournaler1 = new DefaultJournaler();
+        defaultJournaler1.baseDir = storage.getBaseDir().getAbsolutePath();
+        this.transactionsJournaler =defaultJournaler;
+        this.eventsJournaler =defaultJournaler1;
     }
 
     public synchronized JournalStore rollTemp() {
@@ -142,7 +146,7 @@ public class JournalsManager implements Destroyable {
     public void destroy() {
         executor.shutdown();
         try {
-            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS); //等待终止
         } catch (InterruptedException ignored) {
         }
         transactionsJournaler.destroy();

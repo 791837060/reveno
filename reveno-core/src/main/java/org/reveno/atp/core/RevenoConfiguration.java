@@ -186,7 +186,8 @@ public class RevenoConfiguration implements Configuration {
 
         public boolean isPreallocated() {
             return txSize != 0 || eventsSize != 0;
-        }
+        } //is预分配
+
 
         @Override
         public JournalingConfiguration volumes(int volumes) {

@@ -70,6 +70,7 @@ public abstract class VersionedFileUtils {
     }
 
     public static VersionedFile parseVersionedFile(String fileName) {
+        //tx-2023_10_26-00000000000000000001-00000000000000000000
         String[] parts = fileName.split("-");
         if (parts.length < 3)
             throw new IllegalFileName(fileName, null);
@@ -171,6 +172,7 @@ public abstract class VersionedFileUtils {
         }
 
         public long getVersion() {
+            //tx-2023_10_26-00000000000000000002-00000000000000000000  version == 2
             return version;
         }
 

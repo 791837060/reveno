@@ -10,7 +10,7 @@ import org.reveno.atp.core.engine.WorkflowEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DefaultSystemStateRestorer implements SystemStateRestorer {
+public class DefaultSystemStateRestorer implements SystemStateRestorer { //系统状态还原程序
     protected static final Logger LOG = LoggerFactory.getLogger(DefaultSystemStateRestorer.class);
     protected final RestorerEventBus eventBus = new RestorerEventBus();
     protected final JournalsStorage journalStorage;

@@ -53,12 +53,12 @@ public class SnapshottingTest extends RevenoBaseTest {
 
     @Test
     public void testSnapshottingEveryJavaSerializer() throws Exception {
-        testSnapshottingEvery(new DefaultJavaSerializer());
+        testSnapshottingEvery(new DefaultJavaSerializer());//测试快照间隔
     }
 
     @Test
     public void testSnapshottingEveryProtostuffSerializer() throws Exception {
-        testSnapshottingEvery(new ProtostuffSerializer());
+        testSnapshottingEvery(new ProtostuffSerializer());//测试快照间隔
     }
 
     @Test
@@ -76,7 +76,7 @@ public class SnapshottingTest extends RevenoBaseTest {
         testSnapshottingInterval(new ProtostuffSerializer());
     }
 
-    public void testSnapshottingEvery(RepositoryDataSerializer repoSerializer) throws Exception {
+    public void testSnapshottingEvery(RepositoryDataSerializer repoSerializer) throws Exception { //测试快照间隔
         testSnapshottingEvery(repoSerializer, null);
     }
 
@@ -117,7 +117,7 @@ public class SnapshottingTest extends RevenoBaseTest {
         }
     }
 
-    public void testSnapshottingEvery(RepositoryDataSerializer repoSerializer, RepositorySnapshotter snapshotter) throws Exception {
+    public void testSnapshottingEvery(RepositoryDataSerializer repoSerializer, RepositorySnapshotter snapshotter) throws Exception {//测试快照间隔
         Consumer<TestRevenoEngine> consumer = r -> {
             r.domain().resetSnapshotters();
             if (snapshotter == null) {
@@ -157,7 +157,7 @@ public class SnapshottingTest extends RevenoBaseTest {
             if (snapshotter == null) {
                 Arrays.asList(tempDir.listFiles((dir, name) -> name.startsWith("snp"))).forEach(File::delete);
             } else if (snapshotter instanceof InMemorySnapshotter) {
-                ((InMemorySnapshotter) snapshotter).lastIdentifier = null;
+                ((InMemorySnapshotter) snapshotter).lastIdentifier = null; //最后快照为空
                 ((InMemorySnapshotter) snapshotter).lastJournalVersion = -1;
             }
 

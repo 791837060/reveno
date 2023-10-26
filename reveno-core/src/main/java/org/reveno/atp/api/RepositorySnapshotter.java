@@ -21,6 +21,8 @@ public interface RepositorySnapshotter {
      * <p>
      * It should return -1 if no snapshot had been made yet by this snapshotter.
      *
+     * 返回日志的最后一个版本，在此版本之后生成快照。
+     *
      * @return
      */
     long lastJournalVersionSnapshotted();
@@ -47,7 +49,7 @@ public interface RepositorySnapshotter {
 
     /**
      * Commits snapshot @{code identifier} - makes it available for engine to replay.
-     *
+     * 提交快照@｛code identifier｝-使其可供引擎重播。
      * @param identifier
      */
     void commit(long lastJournalVersion, SnapshotIdentifier identifier);
@@ -60,7 +62,7 @@ public interface RepositorySnapshotter {
     RepositoryData load();
 
 
-    interface SnapshotIdentifier {
+    interface SnapshotIdentifier { //快照标识符
         byte getType();
 
         long getTime();

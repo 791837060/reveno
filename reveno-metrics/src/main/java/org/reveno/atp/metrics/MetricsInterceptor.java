@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MetricsInterceptor implements TransactionInterceptor {
+public class MetricsInterceptor implements TransactionInterceptor { //度量拦截器
 
     protected final String latency, throughput;
     protected final ConfigurationImpl config;

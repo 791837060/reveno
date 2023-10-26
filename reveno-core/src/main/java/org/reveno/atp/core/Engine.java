@@ -150,7 +150,9 @@ public class Engine implements Reveno {
         eventPublisher.getPipe().start();
         workflowEngine.init();
         viewsProcessor.process(repository);
-        workflowEngine.setLastTransactionId(restorer.restore(journalVersionAfterSnapshot(), repository).getLastTransactionId());
+        workflowEngine.setLastTransactionId(
+                restorer.restore(journalVersionAfterSnapshot(), repository) //系统状态还原程序
+                        .getLastTransactionId());
 
         workflowEngine.getPipe().sync();
         eventPublisher.getPipe().sync();
@@ -417,7 +419,7 @@ public class Engine implements Reveno {
                 .idGenerator(idGenerator).journalsManager(journalsManager).snapshotsManager(snapshotsManager).interceptorCollection(interceptors)
                 .configuration(config).failoverManager(failoverManager());
         workflowEngine = new WorkflowEngine(processor, workflowContext, config.modelType());
-        restorer = new DefaultSystemStateRestorer(journalsStorage, workflowContext, eventsContext, workflowEngine);
+        restorer = new DefaultSystemStateRestorer(journalsStorage, workflowContext, eventsContext, workflowEngine); //系统状态还原程序
     }
 
     protected long journalVersionAfterSnapshot() {
@@ -425,7 +427,7 @@ public class Engine implements Reveno {
             return restoreWith.lastJournalVersionSnapshotted();
         }
         return snapshotsManager.getAll().stream()
-                .filter(RepositorySnapshotter::hasAny)
+                .filter(RepositorySnapshotter::hasAny) //文件名按string 顺序排序
                 .findFirst()
                 .map(RepositorySnapshotter::lastJournalVersionSnapshotted)
                 .orElse(0L);
@@ -460,11 +462,14 @@ public class Engine implements Reveno {
         return null;
     }
 
-    /**
-     * Since it is very unsecure to obtain Repository data out of transaction workflow,
-     * this method should be used *only* when engine is stopped.
-     */
-    protected synchronized void snapshotAll() {
+  /**
+   * Since it is very unsecure to obtain Repository data out of transaction workflow,
+   * this method should be used *only* when engine is stopped.
+   *
+   * 由于从事务工作流中获得Repository数据是非常不安全的，
+   * 这种方法只能在发动机停止时使用。
+   */
+  protected synchronized void snapshotAll() {
         snapshotsManager.getAll().forEach(s -> {
             RepositorySnapshotter.SnapshotIdentifier id = s.prepare();
             s.snapshot(repository.getData(), id);

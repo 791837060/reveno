@@ -82,8 +82,8 @@ public class Tests extends RevenoBaseTest {
             }
         });
         sendCommandsBatch(reveno, new CreateNewAccountCommand("USD", 1000_000L), 1_000);
-        // it's just fine since on exception we still processing
-        // but such events won't be committed
+        // it's just fine since on exception we still processing 还好，因为我们仍在处理异常 Skipping to send command
+        // but such events won't be committed 但这样的事件不会发生
         Assert.assertTrue(w.isArrived());
 
         reveno.shutdown();
@@ -93,9 +93,10 @@ public class Tests extends RevenoBaseTest {
         reveno.startup();
 
         // after restart we expect that there will be 3 replayed
-        // events - the count of exceptions
-        Assert.assertFalse(w.isArrived(1));
-        Assert.assertEquals(1, w.getCount());
+        // 重启后，我们预计会有3次重播
+        // events - the count of exceptions events-异常计数
+        Assert.assertFalse(w.isArrived(1)); //已到达
+        Assert.assertEquals(1, w.getCount()); // 等4次， 重播3次， 剩1次
 
         reveno.shutdown();
     }

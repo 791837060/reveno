@@ -32,7 +32,7 @@ public interface Configuration {
         }
     }
 
-    enum ModelType {MUTABLE, IMMUTABLE}
+    enum ModelType {MUTABLE, IMMUTABLE} //可变的, 不可改变的
 
     enum MutableModelFailover {SNAPSHOTS, COMPENSATING_ACTIONS}
 

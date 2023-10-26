@@ -8,7 +8,6 @@ import org.reveno.atp.core.api.storage.SnapshotStorage;
 import org.reveno.atp.core.channel.FileChannel;
 import org.reveno.atp.utils.Exceptions;
 import org.reveno.atp.utils.UnsafeUtils;
-import org.reveno.atp.utils.VersionedFileUtils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -213,7 +212,7 @@ public class FileSystemStorage implements FoldersStorage, JournalsStorage, Snaps
     }
 
     @Override
-    public JournalStore convertVolumeToStore(JournalStore volume, long lastTxId) {
+    public JournalStore convertVolumeToStore(JournalStore volume, long lastTxId) { //将卷转换为存储
         VersionedFile txFile = parseVersionedFile(nextVersionFile(baseDir, TRANSACTION_PREFIX, lastTxId));
         VersionedFile evnFile = parseVersionedFile(nextVersionFile(baseDir, EVENTS_PREFIX, lastTxId));
 
@@ -260,6 +259,7 @@ public class FileSystemStorage implements FoldersStorage, JournalsStorage, Snaps
         return new FolderItem(name, address);
     }
 
+    @Override
     public File getBaseDir() {
         return baseDir;
     }

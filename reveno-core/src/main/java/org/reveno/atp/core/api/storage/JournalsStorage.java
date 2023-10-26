@@ -2,6 +2,8 @@ package org.reveno.atp.core.api.storage;
 
 import org.reveno.atp.core.api.channel.Channel;
 
+import java.io.File;
+
 public interface JournalsStorage {
 
     Channel channel(String address);
@@ -37,6 +39,8 @@ public interface JournalsStorage {
         JournalStore store = getLastStore();
         return store == null ? 0 : store.getStoreVersion();
     }
+
+    File getBaseDir();
 
     class JournalStore implements Comparable<JournalStore> {
 

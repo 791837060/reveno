@@ -131,7 +131,7 @@ public class ExceptionalCasesTests extends RevenoBaseTest {
     }
 
     @Test
-    public void testNoPartialReplayOfCommandBatch() throws Exception {
+    public void testNoPartialReplayOfCommandBatch() throws Exception { //测试无部分重播
         TestRevenoEngine reveno = createEngine();
         try {
             reveno.startup();

@@ -29,6 +29,8 @@ public class DefaultInputProcessor implements InputProcessor, Closeable {
         List<Channel> chs = Arrays.stream(stores(fromVersion)).map((js) -> type == JournalType.EVENTS ?
                 js.getEventsCommitsAddress() : js.getTransactionCommitsAddress())
                 .map(storage::channel).collect(Collectors.toList());
+        //Processing channel: evn-2023_10_26-00000000000000000001-00000000000000000000
+        //Processing channel: tx-2023_10_26-00000000000000000001-00000000000000000000
         ChannelReader bufferReader = new ChannelReader(chs);
         bufferReader.iterator().forEachRemaining(b -> {
             try {

@@ -80,7 +80,7 @@ public class WorkflowEngine {
         return ++lastTransactionId;
     }
 
-    protected void buildPipe(PipeProcessor<ProcessorContext> pipe) {
+    protected void buildPipe(PipeProcessor<ProcessorContext> pipe) { // 生成管道
         if (modelType == ModelType.MUTABLE) {
             pipe.then((c, eof) -> {
                 handlers.transactionMutableExecution(c, eof);

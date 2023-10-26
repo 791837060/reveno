@@ -16,6 +16,8 @@ public class DefaultJournaler implements Journaler {
     protected volatile Runnable rolledHandler;
     protected volatile boolean isWriting = false;
 
+    public String baseDir = "";
+
     @Override
     public void writeData(Consumer<Buffer> writer, boolean endOfBatch) {
         requireWriting();
@@ -37,7 +39,7 @@ public class DefaultJournaler implements Journaler {
 
     @Override
     public void startWriting(Channel ch) {
-        log.info("Started writing to {}", ch);
+        log.info("Started writing to {} {}", baseDir,ch);
 
         channel.set(ch);
         oldChannel.set(ch);
@@ -46,7 +48,7 @@ public class DefaultJournaler implements Journaler {
 
     @Override
     public void stopWriting() {
-        log.info("Stopped writing to {}", channel.get());
+        log.info("Stopped writing to {} {}",baseDir, channel.get());
 
         isWriting = false;
         closeSilently(channel.get());
@@ -60,8 +62,10 @@ public class DefaultJournaler implements Journaler {
     }
 
     @Override
-    public void roll(Channel ch, Runnable rolled) {
-        log.info("Rolling to {}", ch);
+    public void roll(Channel ch, Runnable rolled) { //翻滚
+        // Rolling to tmp_evn-2023_10_26-00000000000000000002-00000000000000000000
+        // Rolling to tmp_tx-2023_10_26-00000000000000000002-00000000000000000000
+        log.info("Rolling to {} {}", baseDir, ch);
         if (!isWriting) {
             startWriting(ch);
         }

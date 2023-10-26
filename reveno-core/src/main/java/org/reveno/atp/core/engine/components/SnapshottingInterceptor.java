@@ -58,7 +58,7 @@ public class SnapshottingInterceptor implements TransactionInterceptor {
                 }
             }
         } else if (stage == TransactionStage.JOURNALING && snapshots.containsKey(transactionId)) {
-            if (configuration.modelType() != Configuration.ModelType.MUTABLE) {
+            if (configuration.modelType() != Configuration.ModelType.MUTABLE) { //可改变的
                 try {
                     futures.remove(transactionId).get();
                 } catch (InterruptedException | ExecutionException e) {

@@ -145,7 +145,7 @@ public class RevenoBaseTest {
         return reveno;
     }
 
-    protected void txPerSecondMeter(TestRevenoEngine reveno) {
+    protected void txPerSecondMeter(TestRevenoEngine reveno) { //tx每秒米
         reveno.interceptors().add(TransactionStage.TRANSACTION, new TransactionInterceptor() {
             protected long start = -1L;
 

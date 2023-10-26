@@ -24,6 +24,14 @@ import java.util.TreeSet;
  * 2) During transaction replay, they publish events to {@code publishEvent}
  * as normally. If current transactionId is not belong to any LongRange, then
  * it is skipped, unless, it is being replayed as well.
+ *
+ * 1） 在所有事件提交文件处理期间，｛@code processNextEvent｝
+ * 方法，注意事务N的事件已被处理。
+ * 除非添加了新的LongRange。
+ *
+ * 2） 在事务重播期间，他们将事件发布到｛@code publishEvent｝
+ * 正常情况下。如果当前transactionId不是任何LongRange的一部分，则
+ * 它被跳过，除非它也在重播。
  */
 public class RestorerEventBus implements RestoreableEventBus {
     protected static final Logger log = LoggerFactory.getLogger(RestorerEventBus.class);
@@ -38,7 +46,7 @@ public class RestorerEventBus implements RestoreableEventBus {
         if (currentTransactionId > maxTransactionId) {
             log.info("Current transaction id > max transaction id loaded from events. [{},{}]",
                     currentTransactionId, maxTransactionId);
-            underlyingEventBus.publishEvent(event);
+            underlyingEventBus.publishEvent(event); //基础事件总线
             return;
         }
         Iterator<LongRange> i = unpublishedEvents.iterator();
@@ -46,7 +54,7 @@ public class RestorerEventBus implements RestoreableEventBus {
             LongRange range = i.next();
             if (!range.higher(currentTransactionId)) {
                 if (range.contains(currentTransactionId)) {
-                    underlyingEventBus.publishEvent(event);
+                    underlyingEventBus.publishEvent(event); //基础事件总线
                 }
                 break;
             }
@@ -82,6 +90,7 @@ public class RestorerEventBus implements RestoreableEventBus {
             log.warn("Transaction ID < Last Transaction ID - this is abnormal [{};{}]", event.transactionId(), lastTransactionId);
             addMissedEvents(event);
         } else // TODO it might be just that not all transactions issue events, so nothing is missing
+            // 可能只是不是所有事务都会发出事件，所以没有遗漏任何内容
             if (event.transactionId() - lastTransactionId > 1) {
                 log.debug("Missing transaction events from {} to {}", lastTransactionId + 1, event.transactionId() - 1);
                 unpublishedEvents.add(new LongRange(lastTransactionId + 1, event.transactionId() - 1));
